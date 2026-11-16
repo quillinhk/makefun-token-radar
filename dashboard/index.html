@@ -3,13 +3,78 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Token Radar: pre-token protocols ranked by implied value</title>
+<title>Token Radar — pre-token protocols, ranked by implied value</title>
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<a class="skip" href="#board">Skip to the board</a>
-<main id="board" tabindex="-1" aria-busy="true"></main>
+<header class="masthead">
+  <div class="masthead-text">
+    <p class="eyebrow">Token launch radar</p>
+    <h1>Which protocol is worth farming next?</h1>
+    <p class="lede">Every protocol below records no token yet. Each one is ranked by an implied
+    value computed from its own figures — its TVL, its seven-day growth, and how
+    long it has run with no token — and each row carries a concrete farm plan:
+    what to do, what it costs, and how long it takes.</p>
+    <p class="meta" id="meta-line">Loading the snapshot…</p>
+  </div>
+  <div class="facts" id="facts"></div>
+</header>
+
+<section class="spotlight" id="spotlight" aria-label="Top three protocols"></section>
+
+<section class="controls" aria-label="Board controls">
+  <div class="tabs" role="tablist" aria-label="Pre-token or live">
+    <button class="tab active" id="tab-pre" role="tab" aria-selected="true">Pre-token board</button>
+    <button class="tab" id="tab-live" role="tab" aria-selected="false">Already has a token</button>
+  </div>
+  <label class="field">Search
+    <input type="search" id="q" placeholder="Protocol name or slug…" autocomplete="off">
+  </label>
+  <label class="field">Category
+    <select id="category"><option value="">All categories</option></select>
+  </label>
+  <label class="field">Chain
+    <select id="chain"><option value="">All chains</option></select>
+  </label>
+  <label class="check"><input type="checkbox" id="watchlist-only"> Watchlist only</label>
+  <p class="count" id="count"></p>
+</section>
+
+<main>
+  <table class="board" id="board">
+    <thead>
+      <tr>
+        <th><button class="sort" data-sort="rank">Rank</button></th>
+        <th><button class="sort" data-sort="name">Protocol</button></th>
+        <th>Category</th>
+        <th>Chains</th>
+        <th><button class="sort" data-sort="tvl">TVL</button></th>
+        <th><button class="sort" data-sort="change">7d</button></th>
+        <th><button class="sort" data-sort="age">Age</button></th>
+        <th><button class="sort" data-sort="value">Implied value</button></th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="empty" id="empty" hidden>No protocol matches this filter. Clear the search or widen a filter.</p>
+</main>
+
+<aside class="drawer" id="drawer" aria-label="Protocol detail" hidden>
+  <button class="drawer-close" id="drawer-close" aria-label="Close detail">×</button>
+  <div id="detail"></div>
+</aside>
+
+<footer class="footnote">
+  <p><strong>How the value is built.</strong> Implied value = TVL × tier × growth × maturity × breadth.
+  The tier is 0.18 at $5B TVL or more, 0.22 at $1B, 0.28 at $100M, 0.35 below it. Growth scales with the
+  seven-day TVL change, clamped to −60%…+120%. Maturity rises with the days the protocol has run with no
+  token, capped at three years. Breadth adds 3% per extra chain, up to five. A protocol records no token
+  when DefiLlama carries no token id or symbol for it — that is a record, not a promise that it has none.</p>
+  <p>Snapshot <span id="as-of"></span>, source <span id="source"></span>. Values are this radar's own
+  claim, never a prediction that a token is issued or what it would trade at.</p>
+</footer>
+
 <script src="../data.js"></script>
 <script src="app.js"></script>
 </body>
